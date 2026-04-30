@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { View } from 'react-native';
 import HomeScreen from '../screens/home/HomeScreen';
 import SettingsScreen from '../screens/settings/SettingsScreen';
-import TaskListScreen from '../screens/tasks/TaskListScreen';
+import { TaskStackRoutes } from './TaskStackRoutes';
 import { Header } from '../components/Header';
 
 const Tab = createMaterialTopTabNavigator<TabParamList>();
@@ -64,7 +64,7 @@ export function TabRoutes() {
       })}
     >
         <Tab.Screen name="Home" component={HomeScreen} options={{ title: 'Início' }} />
-        <Tab.Screen name="Tasks" component={TaskListScreen} options={{ title: 'Tarefas' }} />
+        <Tab.Screen name="Tasks" component={TaskStackRoutes} options={{ title: 'Tarefas' }} />
         <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Ajustes' }} />
       </Tab.Navigator>
     </View>

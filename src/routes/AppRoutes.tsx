@@ -7,8 +7,6 @@ import { TabRoutes } from './TabRoutes';
 import { Header } from '../components/Header';
 import LoginScreen from '../screens/LoginScreen';
 import SettingsScreen from '../screens/settings/SettingsScreen';
-import TaskFormScreen from '../screens/tasks/TaskFormScreen';
-import TaskDetailScreen from '../screens/tasks/TaskDetailScreen';
 import { useTheme } from '../hooks/useTheme';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -47,8 +45,6 @@ export function AppRoutes() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.background } }}>
       <Stack.Screen name="Main" component={TabRoutes} />
-      <Stack.Screen name="TaskForm" component={TaskFormScreen} />
-      <Stack.Screen name="TaskDetail" component={TaskDetailScreen} />
     </Stack.Navigator>
   );
 }
