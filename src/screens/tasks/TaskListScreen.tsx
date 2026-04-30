@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
+  Animated,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -12,7 +13,6 @@ import { TaskStackParamList } from '../../types/navigation';
 import { TaskStatus } from '../../types/task';
 import { useTasks } from '../../hooks/useTasks';
 import { useTheme } from '../../hooks/useTheme';
-import { Header } from '../../components/Header';
 import { TaskCard } from '../../components/TaskCard';
 import { FilterBar } from '../../components/FilterBar';
 import { EmptyState } from '../../components/EmptyState';
@@ -32,17 +32,37 @@ export default function TaskListScreen() {
       ? tasks
       : tasks.filter((t) => t.status === activeFilter);
 
+  const fadeAnim = React.useRef(new Animated.Value(0)).current;
+  const slideAnim = React.useRef(new Animated.Value(20)).current;
+
+  React.useEffect(() => {
+    fadeAnim.setValue(0);
+    slideAnim.setValue(20);
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        tension: 50,
+        friction: 7,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [activeFilter]);
+
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Header />
-
       <FilterBar
         active={activeFilter}
         onChange={(filter) => setActiveFilter(filter as FilterOption)}
       />
 
-      <FlatList
+      <Animated.FlatList
         data={filteredTasks}
+        style={{ opacity: fadeAnim, transform: [{ translateY: slideAnim }] }}
         keyExtractor={(item) => item.id}
         contentContainerStyle={[
           styles.list,
@@ -67,12 +87,14 @@ export default function TaskListScreen() {
         }
       />
 
-      <TouchableOpacity
-        style={[styles.fab, { backgroundColor: theme.primary, shadowColor: theme.primary }]}
-        onPress={() => navigation.navigate('TaskForm', {})}
-      >
-        <Text style={styles.fabText}>+</Text>
-      </TouchableOpacity>
+      <Animated.View style={{ opacity: fadeAnim, transform: [{ scale: fadeAnim }] }}>
+        <TouchableOpacity
+          style={[styles.fab, { backgroundColor: theme.primary, shadowColor: theme.primary }]}
+          onPress={() => navigation.navigate('TaskForm', {})}
+        >
+          <Text style={styles.fabText}>+</Text>
+        </TouchableOpacity>
+      </Animated.View>
     </View>
   );
 }

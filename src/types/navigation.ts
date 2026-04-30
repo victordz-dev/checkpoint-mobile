@@ -2,8 +2,6 @@ import { Task } from './task';
 
 export type TaskStackParamList = {
   TaskList: undefined;
-  TaskForm: { taskId?: string };
-  TaskDetail: { taskId: string };
 };
 
 export type TabParamList = {
@@ -15,4 +13,6 @@ export type TabParamList = {
 export type RootStackParamList = {
   Login: undefined;
   Main: undefined;
+  TaskForm: { taskId?: string };
+  TaskDetail: { taskId: string };
 };

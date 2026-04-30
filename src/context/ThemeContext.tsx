@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const STORAGE_KEY = '@taskflow:theme';
+
 
 type ThemeMode = 'dark' | 'light';
 
@@ -40,7 +39,8 @@ const lightTheme: ThemeColors = {
 
 interface ThemeContextData {
   theme: ThemeColors;
-  toggleTheme: () => Promise<void>;
+  toggleTheme: () => void;
+  setThemeMode: (mode: ThemeMode) => void;
 }
 
 export const ThemeContext = createContext<ThemeContextData>({} as ThemeContextData);
@@ -48,35 +48,18 @@ export const ThemeContext = createContext<ThemeContextData>({} as ThemeContextDa
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<ThemeMode>('dark');
 
-  useEffect(() => {
-    loadStoredTheme();
-  }, []);
-
-  async function loadStoredTheme() {
-    try {
-      const stored = await AsyncStorage.getItem(STORAGE_KEY);
-      if (stored === 'light' || stored === 'dark') {
-        setMode(stored);
-      }
-    } catch (error) {
-      console.error('Erro ao carregar tema:', error);
-    }
+  function setThemeMode(newMode: ThemeMode) {
+    setMode(newMode);
   }
 
-  async function toggleTheme() {
-    const next: ThemeMode = mode === 'dark' ? 'light' : 'dark';
-    try {
-      await AsyncStorage.setItem(STORAGE_KEY, next);
-      setMode(next);
-    } catch (error) {
-      console.error('Erro ao salvar tema:', error);
-    }
+  function toggleTheme() {
+    setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
   }
 
   const theme = mode === 'dark' ? darkTheme : lightTheme;
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, toggleTheme, setThemeMode }}>
       {children}
     </ThemeContext.Provider>
   );

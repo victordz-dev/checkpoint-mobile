@@ -9,4 +9,5 @@ export interface User {
   role: UserRole;
   name: string;
   treatment?: UserTreatment;
+  themePreference?: 'dark' | 'light';
 }

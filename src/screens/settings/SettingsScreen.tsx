@@ -11,13 +11,17 @@ import {
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
 import { UserTreatment } from '../../types/user';
-import { Header } from '../../components/Header';
 
 const TREATMENT_OPTIONS: UserTreatment[] = ['Sr.', 'Sra.', 'Srta.'];
 
 export default function SettingsScreen() {
-  const { user, logout, updateTreatment } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { user, logout, updateTreatment, updateTheme } = useAuth();
+  const { theme } = useTheme();
+
+  function handleToggleTheme() {
+    const nextTheme = theme.mode === 'dark' ? 'light' : 'dark';
+    updateTheme(nextTheme);
+  }
 
   function handleLogout() {
     Alert.alert(
@@ -54,8 +58,6 @@ export default function SettingsScreen() {
       style={[styles.container, { backgroundColor: theme.background, opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}
       contentContainerStyle={styles.content}
     >
-      <Header />
-
       {/* Perfil */}
       <Text style={[styles.sectionTitle, { color: theme.primary }]}>Perfil</Text>
       <View style={[styles.card, { backgroundColor: theme.card }]}>
@@ -122,7 +124,7 @@ export default function SettingsScreen() {
           </View>
           <TouchableOpacity
             style={[styles.themeToggle, { backgroundColor: theme.mode === 'dark' ? '#6366f1' : '#e2e8f0' }]}
-            onPress={toggleTheme}
+            onPress={handleToggleTheme}
           >
             <View
               style={[

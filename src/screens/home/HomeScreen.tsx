@@ -13,7 +13,6 @@ import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
 import { TabParamList } from '../../types/navigation';
 import { fetchMotivationalQuote } from '../../services/api';
-import { Header } from '../../components/Header';
 
 type HomeNavigationProp = BottomTabNavigationProp<TabParamList, 'Home'>;
 
@@ -66,8 +65,6 @@ export default function HomeScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Header />
-
       <Animated.View style={[styles.content, { opacity: fadeAnim, transform: [{ translateY: slideAnim }] }]}>
         <Text style={[styles.greeting, { color: theme.text }]}>
           Olá, {user?.name} 👋
